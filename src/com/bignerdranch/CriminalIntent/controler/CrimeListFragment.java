@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.bignerdranch.CriminalIntent.CriminalActivity;
+import com.bignerdranch.CriminalIntent.CrimePagerActivity;
 import com.bignerdranch.CriminalIntent.R;
 import com.bignerdranch.CriminalIntent.model.Crime;
 import com.bignerdranch.CriminalIntent.model.CrimeLab;
@@ -31,17 +31,24 @@ public class CrimeListFragment extends ListFragment {
         mCrimes = CrimeLab.get(getActivity()).getCrimes();
 
 
-        CrimeAdaptor adapter = new CrimeAdaptor(mCrimes);
+        CrimeAdapter adapter = new CrimeAdapter(mCrimes);
 
         setListAdapter(adapter);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 
-        Crime crime = ((CrimeAdaptor)getListAdapter()).getItem(position);
+        Crime crime = ((CrimeAdapter)getListAdapter()).getItem(position);
 
-        Intent intent = new Intent(getActivity(), CriminalActivity.class);
+        Intent intent = new Intent(getActivity(), CrimePagerActivity.class);
         intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
         startActivity(intent);
     }
@@ -49,9 +56,9 @@ public class CrimeListFragment extends ListFragment {
 
 
 
-    private class CrimeAdaptor extends ArrayAdapter<Crime> {
+    private class CrimeAdapter extends ArrayAdapter<Crime> {
 
-        public CrimeAdaptor(ArrayList<Crime> crimes) {
+        public CrimeAdapter(ArrayList<Crime> crimes) {
             super(getActivity(), 0, crimes);
         }
 
