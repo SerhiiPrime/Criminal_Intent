@@ -103,12 +103,11 @@ public class CrimeFragment extends Fragment {
 
     @Override
     public void  onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != Activity.RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
 
         Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-        Log.d("DATE=============================", date.toString());
         mCrime.setDate(date);
         updateDateButton();
     }
@@ -141,7 +140,6 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updateDateButton() {
-        Log.d("DATE------------", mCrime.getDate().toString());
         mDateButton.setText(setSimpleDateFormat().format(mCrime.getDate()));
     }
 }
