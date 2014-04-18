@@ -22,7 +22,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CrimePagerActivity"></activity>
+        <activity android:name=".CrimePagerActivity">
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".CrimeListActivity"/>
+        </activity>
 
 
     </application>

@@ -30,6 +30,7 @@ public class DatePickerFragment extends android.support.v4.app.DialogFragment {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(crimeDate);
 
+
         View dialogDateView = getActivity().getLayoutInflater().inflate(R.layout.dialog_date, null);
 
         initializeDatePicker(calendar, dialogDateView);
