@@ -1,6 +1,8 @@
 package com.bignerdranch.CriminalIntent.model;
 
 import android.content.Context;
+import android.util.Log;
+import com.bignerdranch.CriminalIntent.json.CriminalIntentJSONSerializer;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -10,6 +12,11 @@ import java.util.UUID;
  */
 public class CrimeLab {
 
+    private static final String TAG = "CrimeLab";
+    private static final String FILE_NAME = "crimes.json";
+
+    private CriminalIntentJSONSerializer mSerializer;
+
     private static CrimeLab sCrimeLab;
     private Context mContext;
 
@@ -17,8 +24,15 @@ public class CrimeLab {
 
     private CrimeLab(Context context) {
         mContext = context;
+        mSerializer = new CriminalIntentJSONSerializer(mContext, FILE_NAME);
 
-        mCrimes = new ArrayList<Crime>();
+        try {
+            mCrimes = mSerializer.loadCrims();
+            Log.d(TAG, "loaded");
+        } catch (Exception e) {
+            mCrimes = new ArrayList<Crime>();
+            Log.d(TAG, "Error loadeng files" + e);
+        }
     }
 
 
@@ -45,5 +59,17 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+
+    public boolean saveCrimes() {
+        try {
+            mSerializer.saveCrimes(mCrimes);
+            Log.d(TAG, "saved");
+            return true;
+        } catch (Exception e) {
+            Log.d(TAG, "error saving" + e);
+            return false;
+        }
     }
 }
