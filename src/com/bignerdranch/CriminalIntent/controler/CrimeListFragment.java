@@ -20,7 +20,6 @@ import java.util.ArrayList;
  */
 public class CrimeListFragment extends ListFragment {
 
-    private static final String TAG = "CrimeListFragment";
     private ArrayList<Crime> mCrimes;
 
     @Override
@@ -51,9 +50,7 @@ public class CrimeListFragment extends ListFragment {
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
             listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
                 @Override
-                public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
-
-                }
+                public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {}
 
                 @Override
                 public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -88,20 +85,13 @@ public class CrimeListFragment extends ListFragment {
                 }
 
                 @Override
-                public void onDestroyActionMode(ActionMode actionMode) {
-
-                }
+                public void onDestroyActionMode(ActionMode actionMode) {}
             });
         }
 
         return v;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
-    }
 
 
     @Override
@@ -113,7 +103,6 @@ public class CrimeListFragment extends ListFragment {
         intent.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
         startActivity(intent);
     }
-
 
 
 
@@ -155,7 +144,7 @@ public class CrimeListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_crime_list, menu);
+        inflater.inflate(R.menu.fragment_crime_list_menu, menu);
     }
 
 
@@ -198,6 +187,13 @@ public class CrimeListFragment extends ListFragment {
                 return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
 

@@ -1,7 +1,6 @@
 package com.bignerdranch.CriminalIntent.json;
 
 import android.content.Context;
-import android.util.Log;
 import com.bignerdranch.CriminalIntent.model.Crime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +25,6 @@ public class CriminalIntentJSONSerializer {
 
     public void saveCrimes(ArrayList<Crime> crimes) throws JSONException, IOException {
 
-        Log.d("CrimeLab", "In CriminalIntentJSONSerializer");
         JSONArray array = new JSONArray();
 
         for(Crime c: crimes) {
@@ -46,7 +44,6 @@ public class CriminalIntentJSONSerializer {
             }
         }
     }
-
 
 
     public ArrayList<Crime> loadCrims() throws IOException, JSONException {

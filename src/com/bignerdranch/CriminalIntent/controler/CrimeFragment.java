@@ -70,6 +70,7 @@ public class CrimeFragment extends Fragment {
         return v;
     }
 
+
     private void createTitle(View v) {
 
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
@@ -110,16 +111,6 @@ public class CrimeFragment extends Fragment {
     }
 
 
-    @Override
-    public void  onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-        mCrime.setDate(date);
-        updateDateButton();
-    }
 
     private void createSolvedCheckBox (View v) {
 
@@ -134,6 +125,19 @@ public class CrimeFragment extends Fragment {
     }
 
 
+    @Override
+    public void  onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+        mCrime.setDate(date);
+        updateDateButton();
+    }
+
+
+
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_CRIME_ID, crimeId);
@@ -144,9 +148,11 @@ public class CrimeFragment extends Fragment {
         return crimeFragment;
     }
 
+
     private SimpleDateFormat setSimpleDateFormat() {
         return new SimpleDateFormat("MM/dd/yyyy");
     }
+
 
     private void updateDateButton() {
         mDateButton.setText(setSimpleDateFormat().format(mCrime.getDate()));
