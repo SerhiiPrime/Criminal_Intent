@@ -2,6 +2,7 @@ package com.bignerdranch.CriminalIntent.controler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,10 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
+import android.widget.*;
+import com.bignerdranch.CriminalIntent.CrimeCameraActivity;
 import com.bignerdranch.CriminalIntent.R;
 import com.bignerdranch.CriminalIntent.date.DatePickerFragment;
 import com.bignerdranch.CriminalIntent.model.Crime;
@@ -39,6 +38,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+    private ImageButton mPhoteButton;
 
 
 
@@ -67,6 +67,7 @@ public class CrimeFragment extends Fragment {
         createTitle(v);
         createDateButton(v);
         createSolvedCheckBox(v);
+        createPhotoButton(v);
         return v;
     }
 
@@ -122,6 +123,24 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSolved(b);
             }
         });
+    }
+
+
+    private void createPhotoButton(View v) {
+        mPhoteButton = (ImageButton) v.findViewById(R.id.crime_imageButton);
+        mPhoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
+                startActivity(i);
+            }
+        });
+
+        PackageManager manager = getActivity().getPackageManager();
+        if (!manager.hasSystemFeature(PackageManager.FEATURE_CAMERA) &&
+                !manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            mPhoteButton.setEnabled(false);
+        }
     }
 
 

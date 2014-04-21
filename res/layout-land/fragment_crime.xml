@@ -4,20 +4,49 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    
-    <TextView android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="@string/crime_title_lable"
-              android:layout_marginTop="20dp"
-              style="?android:listSeparatorTextViewStyle"/>
 
-    <EditText
+    <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/crime_title"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="20dp"
-            android:hint="@string/crime_title_hint"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp">
+            <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:id="@+id/crime_imageButton"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/crime_title"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="20dp"
+                    android:hint="@string/crime_title_hint"/>
+
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="@string/crime_title_lable"
+                      android:layout_marginTop="20dp"
+                      style="?android:listSeparatorTextViewStyle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
 
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="@string/crime_details_lable"
