@@ -18,6 +18,7 @@ public class Crime {
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
     private static final String JSON_PHOTO = "photo";
+    private static final String JSON_SUSPECT = "suspect";
 
 
     private Photo mPhoto;
@@ -25,6 +26,7 @@ public class Crime {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private String mSuspect;
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -37,6 +39,10 @@ public class Crime {
         mTitle = json.getString(JSON_TITLE);
         mSolved = json.getBoolean(JSON_SOLVED);
         mDate = new Date(json.getLong(JSON_DATE));
+
+        if (json.has(JSON_SUSPECT)) {
+            mSuspect = json.getString(JSON_SUSPECT);
+        }
 
         if (json.has(JSON_PHOTO)) {
             mPhoto = new Photo(json.getJSONObject(JSON_PHOTO));
@@ -51,6 +57,10 @@ public class Crime {
         object.put(JSON_TITLE, mTitle);
         object.put(JSON_SOLVED, mSolved);
         object.put(JSON_DATE, mDate.getTime());
+
+        if (mSuspect != null) {
+            object.put(JSON_SUSPECT, mSuspect);
+        }
 
         if (mPhoto != null) {
             object.put(JSON_PHOTO, mPhoto.toJSON());
@@ -94,6 +104,13 @@ public class Crime {
         mPhoto = photo;
     }
 
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
 
     @Override
     public String toString() {

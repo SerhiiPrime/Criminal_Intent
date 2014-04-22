@@ -3,14 +3,18 @@ package com.bignerdranch.CriminalIntent.controler;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -40,6 +44,7 @@ public class CrimeFragment extends Fragment implements ActionMode.Callback{
     private static final  String DIALOG_DATE = "date";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_PHOTO = 1;
+    private static final int REQUEST_CONTACT = 2;
 
 
     private Crime mCrime;
@@ -48,6 +53,7 @@ public class CrimeFragment extends Fragment implements ActionMode.Callback{
     private CheckBox mSolvedCheckBox;
     private ImageButton mPhoteButton;
     private ImageView mPhotoView;
+    private Button mSuspectButton;
 
     private ActionMode mActionMode;
 
@@ -78,6 +84,8 @@ public class CrimeFragment extends Fragment implements ActionMode.Callback{
         createSolvedCheckBox(v);
         createPhotoButton(v);
         createPhotoView(v);
+        createReportButton(v);
+        createSuspectButton(v);
         return v;
     }
 
@@ -183,6 +191,41 @@ public class CrimeFragment extends Fragment implements ActionMode.Callback{
     }
 
 
+    private void createReportButton(View v) {
+        v.findViewById(R.id.crime_reportButton).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                        intent = Intent.createChooser(intent, getString(R.string.send_report));
+                        startActivity(intent);
+                    }
+                }
+        );
+    }
+
+
+    private void createSuspectButton(View v) {
+        mSuspectButton = (Button)v.findViewById(R.id.crime_suspectButton);
+        mSuspectButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                        startActivityForResult(i, REQUEST_CONTACT);
+                    }
+                }
+        );
+
+        if (mCrime.getSuspect() != null) {
+            Log.d(TAG, mCrime.getSuspect());
+            mSuspectButton.setText(mCrime.getSuspect());
+        }
+    }
+
 
     private void showPhoto() {
         Photo p = mCrime.getPhoto();
@@ -220,6 +263,24 @@ public class CrimeFragment extends Fragment implements ActionMode.Callback{
                 mCrime.setPhoto(p);
                 showPhoto();
             }
+        } else if (requestCode == REQUEST_CONTACT) {
+            Uri contactUri = data.getData();
+
+            String[] queryFields = new String[] {
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+
+            Cursor c = getActivity().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null);
+            if (c.getCount() == 0) {
+                c.close();
+                return;
+            }
+            c.moveToFirst();
+            String suspect = c.getString(0);
+            mCrime.setSuspect(suspect);
+            mSuspectButton.setText(suspect);
+            c.close();
         }
 
 
@@ -259,6 +320,26 @@ public class CrimeFragment extends Fragment implements ActionMode.Callback{
 
     private void updateDateButton() {
         mDateButton.setText(setSimpleDateFormat().format(mCrime.getDate()));
+    }
+
+
+    private String getCrimeReport() {
+        String solvedString = null;
+        if (mCrime.isSolved()) {
+            solvedString = getString(R.string.crime_report_solved);
+        } else {
+            solvedString = getString(R.string.crime_report_unsolved);
+        }
+        String dateFormat = "EEE, MMM dd";
+        String dateString = (String) DateFormat.format(dateFormat, mCrime.getDate());
+                String suspect = mCrime.getSuspect();
+        if (suspect == null) {
+            suspect = getString(R.string.crime_report_no_suspect);} else {
+            suspect = getString(R.string.crime_report_suspect, suspect);
+        }
+        String report = getString(R.string.crime_report,
+                mCrime.getTitle(), dateString, solvedString, suspect);
+        return report;
     }
 
 
