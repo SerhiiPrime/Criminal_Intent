@@ -93,7 +93,6 @@ public class CrimeListFragment extends ListFragment {
     }
 
 
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 

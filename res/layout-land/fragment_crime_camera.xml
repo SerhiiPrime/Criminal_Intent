@@ -5,16 +5,16 @@
              android:layout_height="match_parent">
 
     <LinearLayout android:id="@+id/crime_camera_preview"
-                  android:orientation="vertical"
+                  android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent">
         <SurfaceView android:id="@+id/crime_camera_surfaceView"
                      android:layout_weight="1"
-                     android:layout_width="match_parent"
-                     android:layout_height="0dp"/>
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"/>
         <Button android:id="@+id/crime_camera_takePictureButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/take"/>
     </LinearLayout>
     <FrameLayout android:id="@+id/crime_camera_progressContainer"

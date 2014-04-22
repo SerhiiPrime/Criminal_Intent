@@ -1,5 +1,6 @@
 package com.bignerdranch.CriminalIntent.model;
 
+import com.bignerdranch.CriminalIntent.model.photo.Photo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,8 +17,10 @@ public class Crime {
     private static final String JSON_TITLE = "title";
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
+    private static final String JSON_PHOTO = "photo";
 
 
+    private Photo mPhoto;
     private UUID mId;
     private String mTitle;
     private Date mDate;
@@ -34,6 +37,10 @@ public class Crime {
         mTitle = json.getString(JSON_TITLE);
         mSolved = json.getBoolean(JSON_SOLVED);
         mDate = new Date(json.getLong(JSON_DATE));
+
+        if (json.has(JSON_PHOTO)) {
+            mPhoto = new Photo(json.getJSONObject(JSON_PHOTO));
+        }
     }
 
 
@@ -44,6 +51,10 @@ public class Crime {
         object.put(JSON_TITLE, mTitle);
         object.put(JSON_SOLVED, mSolved);
         object.put(JSON_DATE, mDate.getTime());
+
+        if (mPhoto != null) {
+            object.put(JSON_PHOTO, mPhoto.toJSON());
+        }
         return object;
     }
 
@@ -74,6 +85,15 @@ public class Crime {
     public void setSolved(boolean solced) {
         mSolved = solced;
     }
+
+    public Photo getPhoto() {
+        return mPhoto;
+    }
+
+    public void setPhoto(Photo photo) {
+        mPhoto = photo;
+    }
+
 
     @Override
     public String toString() {
